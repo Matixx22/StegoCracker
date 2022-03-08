@@ -23,7 +23,7 @@ $ python3 -m venv venv
 Next install requirements using:
 
 ```bash
-$ pip3 install -r requirements
+$ pip3 install -r requirements.txt
 ```
 
 Now you are ready to crack some stego!
