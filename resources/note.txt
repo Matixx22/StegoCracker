@@ -1,0 +1,1 @@
+In this folder there will be test files (img, sound, video files, wordlists)
