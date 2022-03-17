@@ -15,6 +15,7 @@ def main():
     parser.add_argument('-m', '--method', help='Cracking method - "password", "lsb", "html"')
     parser.add_argument('-w', '--wordlist', default=None, help='A wordlist file to be used in cracking')
     parser.add_argument('-o', '--output', default=None, help='A output file for cracking')
+    parser.add_argument('-t', '--threads', default=None, type=int, help='Number of threads (default 8)')
 
     args = parser.parse_args()
 
@@ -22,6 +23,7 @@ def main():
     method = args.method
     wordlist_path = args.wordlist
     output = args.output or file_path + '.out'
+    threads = args.threads or 8
 
     if not os.path.isfile(file_path):
         print(f'\033[31;1m[-] File {file_path} does not exist!\033[0m')
@@ -41,7 +43,7 @@ def main():
             exit()
 
         print('[i] Cracking file with password method...')
-        password_cracker = PasswordCracker(file_path, wordlist_path, output)
+        password_cracker = PasswordCracker(file_path, wordlist_path, output, threads)
         password_cracker.run()
 
     elif method == 'lsb':
