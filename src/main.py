@@ -31,21 +31,24 @@ def main():
         print('\033[31;1m[-] You must specify a cracking method!\033[0m')
         exit()
 
-    if not os.path.isfile(wordlist_path):
-        print(f'\033[31;1m[-] Wordlist {wordlist_path} does not exist!\033[0m')
-        exit()
-
-    if not find_executable('steghide'):
-        print('\033[31;1m[-] "steghide" is not installed. Run "sudo apt install steghide -y to install"\033[0m')
-        exit()
-
     if method == 'password':
+        if not find_executable('steghide'):
+            print('\033[31;1m[-] "steghide" is not installed. Run "sudo apt install steghide -y to install"\033[0m')
+            exit()
+
+        if not os.path.isfile(wordlist_path):
+            print(f'\033[31;1m[-] Wordlist {wordlist_path} does not exist!\033[0m')
+            exit()
+
         print('[i] Cracking file with password method')
         crack_password(file_path, wordlist_path, output)
+
     elif method == 'lsb':
         print('[i] Cracking file with lsb method')
+
     elif method == 'html':
         print('[i] Cracking file with html method')
+
     else:
         print('\033[31;1m[-] Wrong cracking method specified. Possible methods - "password", "lsb", "html"\033[0m')
 

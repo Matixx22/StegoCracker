@@ -8,7 +8,6 @@ def crack_password(file, wordlist, output):
     with open(wordlist, 'r') as wl:
         for password in wl:
             password = password.strip()
-            # print('Trying passphrase:', password)
             p = run(['steghide', 'extract', '-sf', file, '-xf', output, '-p', password, '-f'],
                     stderr=DEVNULL)
 
