@@ -5,7 +5,7 @@ import argparse
 import os
 from distutils.spawn import find_executable
 
-from cracker import crack_password
+from cracker import PasswordCracker
 
 
 def main():
@@ -40,8 +40,9 @@ def main():
             print(f'\033[31;1m[-] Wordlist {wordlist_path} does not exist!\033[0m')
             exit()
 
-        print('[i] Cracking file with password method')
-        crack_password(file_path, wordlist_path, output)
+        print('[i] Cracking file with password method...')
+        password_cracker = PasswordCracker(file_path, wordlist_path, output)
+        password_cracker.run()
 
     elif method == 'lsb':
         print('[i] Cracking file with lsb method')
