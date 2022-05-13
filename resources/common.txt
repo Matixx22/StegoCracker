@@ -240,6 +240,7 @@ import
 help
 hidden
 hide
+hello
 history
 hits
 home

@@ -93,11 +93,11 @@ def main():
 
 if __name__ == '__main__':
     main()
-#     html_filename = "./example.html"
-#     pcap_filename = "./example.pcap"
-#     img_filename = "./example.jpg"
-
-#     find_steg(html_get_lower_letters(html_filename))
-#     find_steg(html_get_upper_letters(html_filename))
-#     find_steg(icmp_get_data(pcap_filename))
-#     find_steg(image_get_lsb(img_filename))
+    # html_filename = "./example.html"
+    # pcap_filename = "./example.pcap"
+    # img_filename = "./example.jpg"
+    #
+    # find_steg(html_get_lower_letters(html_filename))
+    # find_steg(html_get_upper_letters(html_filename))
+    # find_steg(icmp_get_data(pcap_filename))
+    # find_steg(image_get_lsb(img_filename))
