@@ -1,3 +1,10 @@
+from scapy.all import PcapReader, raw, rdpcap,ls, hex_bytes
+
+
+def _data_from_icmp(icmp_packet):
+    print(icmp_packet)
+
+
 def get_data(filename) -> bytes:
     """
     Get data from Internet Control Message Protocol packet.
@@ -15,6 +22,19 @@ def get_data(filename) -> bytes:
     """
     data = b''
 
+    packets = rdpcap(filename)
+
+    for packet in packets:
+        if packet.haslayer("ICMP"):
+            if packet["ICMP"].load != b'\x00':
+                data = data + packet["ICMP"].load
+
+
+
     # Code goes here...
 
     return data
+
+
+if __name__ == '__main__':
+    print(get_data("../../../resources/simple_icmp.pcap"))
