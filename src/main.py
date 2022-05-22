@@ -1,7 +1,6 @@
 from getdata import icmp_get_data
 from getdata import image_get_lsb
-from getdata import html_get_lower_letters
-from getdata import html_get_upper_letters
+from getdata import html_get_tags
 
 from checkdata import check_hash
 from checkdata import check_jpg
@@ -86,6 +85,11 @@ def main():
 
     elif method == 'html':
         print('[i] Cracking file with html method')
+        data = html_get_tags(file_path)
+
+        is_txt, txt = check_txt(data)
+
+        print(f'[+] Found hidden text in HTML document: {txt}')
 
     else:
         print('\033[31;1m[-] Wrong cracking method specified. Possible methods - "password", "lsb", "html"\033[0m')

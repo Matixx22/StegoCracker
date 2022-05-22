@@ -1,6 +1,5 @@
 # html
-from .html.lower_letters import get_data as html_get_lower_letters
-from .html.upper_letters import get_data as html_get_upper_letters
+from .html.get_tags_letters import get_data as html_get_tags
 
 # image
 from .image.lsb import get_data as image_get_lsb
