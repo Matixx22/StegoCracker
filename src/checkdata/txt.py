@@ -41,12 +41,11 @@ def check_data(source) -> {bool, str}:
             valid_counter += 1
             if valid_counter == limit_valid_text:
                 is_txt = True
-    if source in text_ascii_chars:
-        print("dziala")
 
     return is_txt, txt
 
 
+# remove later
 if __name__ == '__main__':
     text = bytearray.fromhex("4E 69 65 6E 61 77 69 64 7A 65 20 62 6F 74 6F 77 7e")
     data = open("../../resources/sample.jpg", "rb").read()
