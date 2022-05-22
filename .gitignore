@@ -16,6 +16,7 @@ cmake-build-*/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+/resources/temp
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
