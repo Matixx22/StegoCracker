@@ -1,4 +1,4 @@
-from scapy.all import PcapReader, raw, rdpcap,ls, hex_bytes
+from scapy.all import PcapReader, raw, rdpcap, ls, hex_bytes
 
 
 def _data_from_icmp(icmp_packet):
@@ -28,10 +28,6 @@ def get_data(filename) -> bytes:
         if packet.haslayer("ICMP"):
             if packet["ICMP"].load != b'\x00':
                 data = data + packet["ICMP"].load
-
-
-
-    # Code goes here...
 
     return data
 
