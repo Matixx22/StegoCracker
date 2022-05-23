@@ -1,22 +1,4 @@
-import os
-import io
-import numpy as np
 from PIL import Image
-
-
-def to_bin(data):
-    """
-    Converts the data to binary
-    
-    """
-    if isinstance(data, str):
-        return ''.join([format(ord(i), "08b") for i in data])
-    elif isinstance(data, bytes) or isinstance(data, np.ndarray):
-        return [format(i, "08b") for i in data]
-    elif isinstance(data, int) or isinstance(data, np.unit8):
-        return format(data, "08b")
-    else:
-        raise TypeError("Type not supported")
 
 
 def get_data(filename) -> bytes:
