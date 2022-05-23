@@ -1,7 +1,8 @@
 import os
 import io
 import numpy as np
-import PIL.Image as Image
+from PIL import Image
+
 
 def to_bin(data):
     """
@@ -17,6 +18,7 @@ def to_bin(data):
     else:
         raise TypeError("Type not supported")
 
+
 def get_data(filename) -> bytes:
     """
     Get from image least significant bits
@@ -31,35 +33,36 @@ def get_data(filename) -> bytes:
         data (bytes): Data extracted from image
 
     """
-    # Code goes here...
-    
-    if not os.path.exists(filename):
-        print("\033[92m[!] Image not found\033[00m")
-        return
-    print("\033[92mDecodingMode : On\033[0m \n\033[92m[*] Please wait...\033[0m \n\033[92m[*] Decoding...\033[0m")
-    
-    # read the image
+    data = bytes()
 
-    # Convert image to bytes
-   
-    pil_im = Image.fromarray(filename)
-    b = io.BytesIO()
-    pil_im.save(b, 'jpeg')
-    image = b.getvalue()
-    data = b''
-    
-    for row in image:
-        for pixel in row:
-            r, g, b = to_bin(pixel)
-            data += r[-1]
-            data += g[-1]
-            data += b[-1]
-    # split by 8-bits
-    all_bytes = [data[i: i + 8] for i in range(0, len(data), 8)]
+    pil_im = Image.open(filename, 'r')
+    image = list(pil_im.getdata())
+    counter = 0
+    bit = [0] * 8
+    byte = 0
 
+    for pixel in image:
+        for color in pixel:
+            bit[counter] = color & 1
+            counter += 1
+            # convert 8bits to one byte and add to data
+            if counter == 8:
+                for i in range(0, 8):
+                    byte += (bit[i] << (7 - i))
+                data += byte.to_bytes(1, byteorder='big')
+                byte = 0
+                counter = 0
 
-    return all_bytes
+    # convert left bits to byte if there is any
+    if counter > 0:
+        for i in range(0, counter):
+            byte += (bit[i] << (7 - i))
+        data += byte.to_bytes(1, byteorder='big')
 
+    return data
 
 
+if __name__ == '__main__':
+    filename = "../../../resources/sample.jpg"
 
+    print(get_data(filename))
