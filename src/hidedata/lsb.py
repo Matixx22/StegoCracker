@@ -14,7 +14,6 @@ def bytes2intarray(data):
 
 def hide_in_lsb(filename, to_hide):
     pil_im = Image.open(filename, 'r')
-    print(np.array(pil_im))
     image = list(pil_im.getdata())
     to_hide = bytes2intarray(to_hide)
 
