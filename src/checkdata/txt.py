@@ -19,6 +19,7 @@ def check_data(source) -> {bool, str}:
 
     Args:
         source (bytes): bytes to check
+        output: Folder to save found message
 
     Raises:
         TODO jak coś będzie

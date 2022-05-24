@@ -4,12 +4,13 @@ def _write_binary(data: bytes, path: str):
     file = open(path, 'wb')
     file.write(data)
 
-def check_data(source) -> {bool, str}:
+def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
     """
     Check if there is pdf in bytes
 
     Args:
         source (bytes): bytes to check
+        output: Folder to save found message
 
     Raises:
         TODO jak coś będzie

@@ -37,28 +37,6 @@ def get_filetype(file):
             return 'html'
 
 
-def find_steg(source):
-    find_hash = check_hash(source)
-    if find_hash[0]:
-        print("Found Hash " + find_hash[1])
-        return "Found Hash " + find_hash[1]
-
-    find_jpg = check_jpg(source)
-    if find_jpg[0]:
-        print("Found JPG. New file location: " + find_jpg[1])
-        return "Found JPG. New file location: " + find_jpg[1]
-
-    find_pdf = check_pdf(source)
-    if find_pdf[0]:
-        print("Found PDF. New file location: " + find_pdf[1])
-        return "Found PDF. New file location: " + find_pdf[1]
-
-    find_txt = check_txt(source)
-    if find_txt[0]:
-        print("Found text: " + find_txt[1])
-        return "Found text: " + find_txt[1]
-
-
 def main():
     # args
     parser = argparse.ArgumentParser(description="StegoCracker - easy way to crack steganography")
@@ -68,14 +46,12 @@ def main():
 
     args = parser.parse_args()
 
-    file_path = args.file
+    infile = args.file
     output = args.output
-
-
 
     if not os.path.isdir(output):
         print(f'\033[31;1m[-] Creating directory {os.curdir+output}\033[0m')
-        exit()
+
 
 
 
