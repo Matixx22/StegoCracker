@@ -12,6 +12,7 @@ def check_data(source) -> {bool}:
         is_hash (bool): True - str contain hash, False - str don't contain hash
 
     """
+    # TODO better hash searching
     is_hash = False
     hash = ""
 

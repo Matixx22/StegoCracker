@@ -82,10 +82,9 @@ def main():
     if pdf[0]:
         print(f'\033[33;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
 
-    exe_output = output
-    # # exe
-    # if check_jpg(data)[0]:
-    #     print(f'\033[31;1m[-] Found jpg in {infile} and saved it in {output}\033[0m')
+    # exe = check_exe(infile)
+    # if exe[0]:
+    #     print(f'\033[33;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
 
     txt_output = output + "/" + time + ".txt"
     txt = check_txt(data)
