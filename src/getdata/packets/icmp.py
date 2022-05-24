@@ -33,4 +33,4 @@ def get_data(filename) -> bytes:
 
 
 if __name__ == '__main__':
-    print(get_data("../../../resources/simple_icmp.pcap"))
+    print(get_data("../../../resources/hidden/sample_icmp.pcapng"))

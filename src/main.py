@@ -9,17 +9,33 @@ from checkdata import check_txt
 
 import argparse
 import os
-from distutils.spawn import find_executable
 
-from cracker import PasswordCracker
 
-"""
-In main script there will be implemented multithreading and option parser for different crack methods
-"""
+def get_filetype(file):
+    data = bytearray(open(file, 'rb').read(20))
 
-"""
-But for now it's showing how to use getdata and checkdata packages
-"""
+    pcap_signature = [b'\x0A\x0D\x0D\x0A', b'\xA1\xB2\xC3\xD4', b'\x4D\x3C\xB2\xA1', b'\xA1\xB2\x3C\x4D']
+    jpg_signature = [b'\xff\xd8\xff']
+    html_signature = [b'<html', b'<Html', b'<hTml', b'<htMl', b'<htmL',
+                      b'<HTml', b'<HtMl', b'<HtmL', b'<hTMl', b'<hTmL',
+                      b'<htML', b'<HTMl', b'<HTmL', b'<HtML', b'<hTML',
+                      b'<HTML', ]
+
+    # pcap
+    for signature in pcap_signature:
+        if data[:len(signature)] == signature:
+            return 'pcap'
+
+    # jpg
+    for signature in jpg_signature:
+        if data[:len(signature)] == signature:
+            return 'jpg'
+
+    # html
+    for signature in html_signature:
+        if data[:len(signature)] == signature:
+            return 'html'
+
 
 def find_steg(source):
     find_hash = check_hash(source)
@@ -42,61 +58,31 @@ def find_steg(source):
         print("Found text: " + find_txt[1])
         return "Found text: " + find_txt[1]
 
+
 def main():
+    # args
     parser = argparse.ArgumentParser(description="StegoCracker - easy way to crack steganography")
 
-    parser.add_argument('file', help='A file to crack')
-    parser.add_argument('-m', '--method', help='Cracking method - "password", "lsb", "html"')
-    parser.add_argument('-w', '--wordlist', default=None, help='A wordlist file to be used in cracking')
-    parser.add_argument('-o', '--output', default=None, help='A output file for cracking')
-    parser.add_argument('-t', '--threads', default=None, type=int, help='Number of threads (default 8)')
+    parser.add_argument('file', help='A file to search for hidden message')
+    parser.add_argument('-o', '--output', default="temp", help='Folder for found messages')
 
     args = parser.parse_args()
 
     file_path = args.file
-    method = args.method
-    wordlist_path = args.wordlist
-    output = args.output or file_path + '.out'
-    threads = args.threads or 8
+    output = args.output
 
-    if not os.path.isfile(file_path):
-        print(f'\033[31;1m[-] File {file_path} does not exist!\033[0m')
+
+
+    if not os.path.isdir(output):
+        print(f'\033[31;1m[-] Creating directory {os.curdir+output}\033[0m')
         exit()
 
-    if method is None:
-        print('\033[31;1m[-] You must specify a cracking method!\033[0m')
-        exit()
 
-    if method == 'password':
-        if not find_executable('steghide'):
-            print('\033[31;1m[-] "steghide" is not installed. Run "sudo apt install steghide -y to install"\033[0m')
-            exit()
-
-        if not os.path.isfile(wordlist_path):
-            print(f'\033[31;1m[-] Wordlist {wordlist_path} does not exist!\033[0m')
-            exit()
-
-        print('[i] Cracking file with password method...')
-        password_cracker = PasswordCracker(file_path, wordlist_path, output, threads)
-        password_cracker.run()
-
-    elif method == 'lsb':
-        print('[i] Cracking file with lsb method')
-
-    elif method == 'html':
-        print('[i] Cracking file with html method')
-        data = html_get_tags(file_path)
-
-        is_txt, txt = check_txt(data)
-
-        print(f'[+] Found hidden text in HTML document: {txt}')
-
-    else:
-        print('\033[31;1m[-] Wrong cracking method specified. Possible methods - "password", "lsb", "html"\033[0m')
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    print(get_filetype("../resources/html/index.html"))
     # html_filename = "./example.html"
     # pcap_filename = "./example.pcap"
     # img_filename = "./example.jpg"
