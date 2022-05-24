@@ -7,7 +7,7 @@ def _write_binary(data: bytes, path: str):
     file.write(data)
 
 
-def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
+def check_data(source: bytes, output: str = "../../resources/temp/") -> {bool, str}:
     """
     Check if there is jpg in bytes
 
@@ -40,7 +40,7 @@ def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
         jpg_end_index = source.index(jpg_end_signature) + len(jpg_end_signature)
         jpg_bytes = source[jpg_start_index:jpg_end_index]
         # write bytes to new file
-        jpg_location = output + str(time) + ".jpg"
+        jpg_location = output + "/" + str(time) + ".jpg"
         _write_binary(jpg_bytes, jpg_location)
 
     return is_jpg, jpg_location

@@ -4,6 +4,7 @@ def _write_binary(data: bytes, path: str):
     file = open(path, 'wb')
     file.write(data)
 
+
 def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
     """
     Check if there is pdf in bytes
