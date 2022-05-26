@@ -23,12 +23,25 @@ def check_data(source) -> {bool}:
 
     matched_list = [characters in hash_chars for characters in source]
 
-    if all(matched_list) and len(source) in [length/4 for length in hash_length]:
-        is_hash = True
+    for index in range(0, len(source)):
+        char = source[index]
+        if char in hash_chars:
+            for length in sorted(hash_length, reverse=True):
+                try:
+                    end = index+int(length/4)
+                    matched_list = [characters in hash_chars for characters in source[index:end]]
+                    if all(matched_list) and len(matched_list) == length/4:
+                        is_hash = True
+                        hash = source[index:end]
+                        return is_hash, hash
+                except:
+                    pass
 
     return is_hash, hash
 
 
 if __name__ == '__main__':
-    if check_data("5a5dc3936c05c32e61aa539e7ffb40ca"):
-        print("to może być hash")
+    check = check_data("1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75")
+    print(check[0])
+    print(check[1])
+
