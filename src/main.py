@@ -6,11 +6,12 @@ from checkdata import check_hash
 from checkdata import check_jpg
 from checkdata import check_pdf
 from checkdata import check_txt
+from checkdata import check_exe
 
 import argparse
 import os
 from datetime import datetime
-
+from threading import Thread
 
 def _write_binary(data: bytes, path: str):
     file = open(path, 'wb')
@@ -56,6 +57,38 @@ def getdata(infile: str):
         return icmp_get_data(infile)
 
 
+def exe(infile, data, output):
+    exe = check_exe(data, output)
+    if exe[0]:
+        print(f'\033[33;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
+
+
+def jpg(infile, data, output):
+    jpg = check_jpg(data, output)
+    if jpg[0]:
+        print(f'\033[33;1m[+] Found jpg in {infile} and saved it in {jpg[1]}\033[0m')
+
+
+def pdf(infile, data, output):
+    pdf = check_pdf(data, output)
+    if pdf[0]:
+        print(f'\033[33;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
+
+
+def txt_hash(infile, data, output):
+    time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    txt_output = output + "/" + time + ".txt"
+    txt = check_txt(data)
+    if txt[0]:
+        open(txt_output, 'w').write(txt[1])
+        print(f'\033[33;1m[+] Found txt in {infile} and saved it in {txt_output}\033[0m')
+        hash_output = output + "/" + time + ".hash"
+        hash = check_hash(txt[1])
+        if hash[0]:
+            open(hash_output, 'w').write(hash[1])
+            print(f'\033[33;1m[+] Found hash in {infile} and saved it in {output}\033[0m')
+
+
 def main():
     # args
     parser = argparse.ArgumentParser(description="StegoCracker - easy way to crack steganography")
@@ -68,34 +101,14 @@ def main():
     infile = args.file
     data = getdata(infile)
     output = args.output
-    time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
     if not os.path.isdir(output):
         print(f'\033[31;1m[+] Creating directory {output}\033[0m')
         os.mkdir(output)
-
-    jpg = check_jpg(data, output)
-    if jpg[0]:
-        print(f'\033[33;1m[+] Found jpg in {infile} and saved it in {jpg[1]}\033[0m')
-
-    pdf = check_pdf(data, output)
-    if pdf[0]:
-        print(f'\033[33;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
-
-    # exe = check_exe(infile)
-    # if exe[0]:
-    #     print(f'\033[33;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
-
-    txt_output = output + "/" + time + ".txt"
-    txt = check_txt(data)
-    if txt[0]:
-        open(txt_output, 'w').write(txt[1])
-        print(f'\033[33;1m[+] Found txt in {infile} and saved it in {txt_output}\033[0m')
-        hash_output = output + "/" + time + ".hash"
-        hash = check_hash(txt[1])
-        if hash[0]:
-            open(hash_output, 'w').write(hash[1])
-            print(f'\033[33;1m[+] Found hash in {infile} and saved it in {output}\033[0m')
+    Thread(target=jpg, args=(infile, data, output,)).start()
+    Thread(target=pdf, args=(infile, data, output,)).start()
+    Thread(target=exe, args=(infile, data, output,)).start()
+    Thread(target=txt_hash, args=(infile, data, output,)).start()
 
 
 if __name__ == '__main__':
