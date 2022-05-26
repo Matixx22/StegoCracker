@@ -47,4 +47,4 @@ def get_data(filename) -> bytes:
 if __name__ == '__main__':
     filename = "../../../resources/sample.jpg"
 
-    print(get_data(filename))
+    print(get_data(filename).hex())

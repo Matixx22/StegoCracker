@@ -9,99 +9,94 @@ from checkdata import check_txt
 
 import argparse
 import os
-from distutils.spawn import find_executable
+from datetime import datetime
 
-from cracker import PasswordCracker
 
-"""
-In main script there will be implemented multithreading and option parser for different crack methods
-"""
+def _write_binary(data: bytes, path: str):
+    file = open(path, 'wb')
+    file.write(data)
 
-"""
-But for now it's showing how to use getdata and checkdata packages
-"""
 
-def find_steg(source):
-    find_hash = check_hash(source)
-    if find_hash[0]:
-        print("Found Hash " + find_hash[1])
-        return "Found Hash " + find_hash[1]
+def get_filetype(file):
+    data = bytearray(open(file, 'rb').read(20))
 
-    find_jpg = check_jpg(source)
-    if find_jpg[0]:
-        print("Found JPG. New file location: " + find_jpg[1])
-        return "Found JPG. New file location: " + find_jpg[1]
+    pcap_signature = [b'\x0A\x0D\x0D\x0A', b'\xA1\xB2\xC3\xD4', b'\x4D\x3C\xB2\xA1', b'\xA1\xB2\x3C\x4D']
+    jpg_signature = [b'\xff\xd8\xff']
+    html_signature = [b'<html', b'<Html', b'<hTml', b'<htMl', b'<htmL',
+                      b'<HTml', b'<HtMl', b'<HtmL', b'<hTMl', b'<hTmL',
+                      b'<htML', b'<HTMl', b'<HTmL', b'<HtML', b'<hTML',
+                      b'<HTML', ]
 
-    find_pdf = check_pdf(source)
-    if find_pdf[0]:
-        print("Found PDF. New file location: " + find_pdf[1])
-        return "Found PDF. New file location: " + find_pdf[1]
+    # pcap
+    for signature in pcap_signature:
+        if data[:len(signature)] == signature:
+            return 'pcap'
 
-    find_txt = check_txt(source)
-    if find_txt[0]:
-        print("Found text: " + find_txt[1])
-        return "Found text: " + find_txt[1]
+    # jpg
+    for signature in jpg_signature:
+        if data[:len(signature)] == signature:
+            return 'jpg'
+
+    # html
+    for signature in html_signature:
+        if data[:len(signature)] == signature:
+            return 'html'
+
+
+def getdata(infile: str):
+    infile_type = get_filetype(infile)
+
+    if infile_type == 'html':
+        return html_get_tags(infile)
+
+    elif infile_type == 'jpg':
+        return image_get_lsb(infile)
+
+    elif infile_type == 'pcap':
+        return icmp_get_data(infile)
+
 
 def main():
+    # args
     parser = argparse.ArgumentParser(description="StegoCracker - easy way to crack steganography")
 
-    parser.add_argument('file', help='A file to crack')
-    parser.add_argument('-m', '--method', help='Cracking method - "password", "lsb", "html"')
-    parser.add_argument('-w', '--wordlist', default=None, help='A wordlist file to be used in cracking')
-    parser.add_argument('-o', '--output', default=None, help='A output file for cracking')
-    parser.add_argument('-t', '--threads', default=None, type=int, help='Number of threads (default 8)')
+    parser.add_argument('file', help='A file to search for hidden message')
+    parser.add_argument('-o', '--output', default="temp", help='Full path for folder for found messages')
 
     args = parser.parse_args()
 
-    file_path = args.file
-    method = args.method
-    wordlist_path = args.wordlist
-    output = args.output or file_path + '.out'
-    threads = args.threads or 8
+    infile = args.file
+    data = getdata(infile)
+    output = args.output
+    time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
-    if not os.path.isfile(file_path):
-        print(f'\033[31;1m[-] File {file_path} does not exist!\033[0m')
-        exit()
+    if not os.path.isdir(output):
+        print(f'\033[31;1m[+] Creating directory {output}\033[0m')
+        os.mkdir(output)
 
-    if method is None:
-        print('\033[31;1m[-] You must specify a cracking method!\033[0m')
-        exit()
+    jpg = check_jpg(data, output)
+    if jpg[0]:
+        print(f'\033[33;1m[+] Found jpg in {infile} and saved it in {jpg[1]}\033[0m')
 
-    if method == 'password':
-        if not find_executable('steghide'):
-            print('\033[31;1m[-] "steghide" is not installed. Run "sudo apt install steghide -y to install"\033[0m')
-            exit()
+    pdf = check_pdf(data, output)
+    if pdf[0]:
+        print(f'\033[33;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
 
-        if not os.path.isfile(wordlist_path):
-            print(f'\033[31;1m[-] Wordlist {wordlist_path} does not exist!\033[0m')
-            exit()
+    # exe = check_exe(infile)
+    # if exe[0]:
+    #     print(f'\033[33;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
 
-        print('[i] Cracking file with password method...')
-        password_cracker = PasswordCracker(file_path, wordlist_path, output, threads)
-        password_cracker.run()
-
-    elif method == 'lsb':
-        print('[i] Cracking file with lsb method')
-
-    elif method == 'html':
-        print('[i] Cracking file with html method')
-        data = html_get_tags(file_path)
-
-        is_txt, txt = check_txt(data)
-
-        print(f'[+] Found hidden text in HTML document: {txt}')
-
-    else:
-        print('\033[31;1m[-] Wrong cracking method specified. Possible methods - "password", "lsb", "html"\033[0m')
+    txt_output = output + "/" + time + ".txt"
+    txt = check_txt(data)
+    if txt[0]:
+        open(txt_output, 'w').write(txt[1])
+        print(f'\033[33;1m[+] Found txt in {infile} and saved it in {txt_output}\033[0m')
+        hash_output = output + "/" + time + ".hash"
+        hash = check_hash(txt[1])
+        if hash[0]:
+            open(hash_output, 'w').write(hash[1])
+            print(f'\033[33;1m[+] Found hash in {infile} and saved it in {output}\033[0m')
 
 
 if __name__ == '__main__':
     main()
-    # html_filename = "./example.html"
-    # pcap_filename = "./example.pcap"
-    # img_filename = "./example.jpg"
-    #
-    # find_steg(html_get_lower_letters(html_filename))
-    # find_steg(html_get_upper_letters(html_filename))
-    # find_steg(icmp_get_data(pcap_filename))
-    # find_steg(image_get_lsb(img_filename))

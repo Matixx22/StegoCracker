@@ -12,7 +12,9 @@ def check_data(source) -> {bool}:
         is_hash (bool): True - str contain hash, False - str don't contain hash
 
     """
+    # TODO better hash searching
     is_hash = False
+    hash = ""
 
     hash_chars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                   "A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f"]
@@ -24,7 +26,7 @@ def check_data(source) -> {bool}:
     if all(matched_list) and len(source) in [length/4 for length in hash_length]:
         is_hash = True
 
-    return is_hash
+    return is_hash, hash
 
 
 if __name__ == '__main__':
