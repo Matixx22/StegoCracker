@@ -7,11 +7,11 @@ from threading import Thread
 
 
 class PasswordCracker:
-    def __init__(self, file, wordlist, output, threads):
+    def __init__(self, file, wordlist):
         self.file = file
         self.wordlist = wordlist
-        self.output = output
-        self.threads = threads
+        self.output = './steghide_crack_output'
+        self.threads = 4
         self.passwords = Queue()
         self.iter = 0
 
@@ -25,7 +25,7 @@ class PasswordCracker:
         while not self.passwords.empty():
             password = self.passwords.get()
 
-            print(f'\r[i] Progress: {self.iter}/{self.passwords_len} ({round(self.iter / self.passwords_len * 100, 2)}%)', end='')
+            print(f'\033[34;1m\r[i] Progress: {self.iter}/{self.passwords_len} ({round(self.iter / self.passwords_len * 100, 2)}%)\033[0m', end='')
 
             p = run(['steghide', 'extract', '-sf', self.file, '-xf', self.output, '-p', password, '-f'], stderr=DEVNULL)
 
@@ -33,7 +33,7 @@ class PasswordCracker:
 
             if p.returncode == 0:
                 print(f'\n\033[32;1m[+] Found passphrase: {password}\033[0m')
-                print('[+] Output is in file:', self.output)
+                print(f'\033[34;1m[i] Output is in file: {self.output}\033[0m')
                 with self.passwords.mutex:
                     self.passwords.queue.clear()
                 return

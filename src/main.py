@@ -12,6 +12,10 @@ import argparse
 import os
 from datetime import datetime
 from threading import Thread
+from distutils.spawn import find_executable
+
+from cracker import PasswordCracker
+
 
 def _write_binary(data: bytes, path: str):
     file = open(path, 'wb')
@@ -60,19 +64,19 @@ def getdata(infile: str):
 def exe(infile, data, output):
     exe = check_exe(data, output)
     if exe[0]:
-        print(f'\033[33;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
+        print(f'\033[32;1m[-] Found exe in {infile} and saved it in {exe[1]}\033[0m')
 
 
 def jpg(infile, data, output):
     jpg = check_jpg(data, output)
     if jpg[0]:
-        print(f'\033[33;1m[+] Found jpg in {infile} and saved it in {jpg[1]}\033[0m')
+        print(f'\033[32;1m[+] Found jpg in {infile} and saved it in {jpg[1]}\033[0m')
 
 
 def pdf(infile, data, output):
     pdf = check_pdf(data, output)
     if pdf[0]:
-        print(f'\033[33;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
+        print(f'\033[32;1m[+] Found pdf in {infile} and saved it in {pdf[1]}\033[0m')
 
 
 def txt_hash(infile, data, output):
@@ -81,12 +85,12 @@ def txt_hash(infile, data, output):
     txt = check_txt(data)
     if txt[0]:
         open(txt_output, 'w').write(txt[1])
-        print(f'\033[33;1m[+] Found txt in {infile} and saved it in {txt_output}\033[0m')
+        print(f'\033[32;1m[+] Found txt in {infile} and saved it in {txt_output}\033[0m')
         hash_output = output + "/" + time + ".hash"
         hash = check_hash(txt[1])
         if hash[0]:
             open(hash_output, 'w').write(hash[1])
-            print(f'\033[33;1m[+] Found hash in {infile} and saved it in {output}\033[0m')
+            print(f'\033[32;1m[+] Found hash in {infile} and saved it in {output}\033[0m')
 
 
 def main():
@@ -95,20 +99,40 @@ def main():
 
     parser.add_argument('file', help='A file to search for hidden message')
     parser.add_argument('-o', '--output', default="temp", help='Full path for folder for found messages')
+    parser.add_argument('-p', action='store_true', help='Use this flag if you want to crack a steghide password')
+    parser.add_argument('-w', '--wordlist', required=False, help='A wordlist used to crack a password')
 
     args = parser.parse_args()
 
     infile = args.file
     data = getdata(infile)
     output = args.output
+    pass_crack_flag = args.p
+    wordlist = args.wordlist
 
-    if not os.path.isdir(output):
-        print(f'\033[31;1m[+] Creating directory {output}\033[0m')
-        os.mkdir(output)
-    Thread(target=jpg, args=(infile, data, output,)).start()
-    Thread(target=pdf, args=(infile, data, output,)).start()
-    Thread(target=exe, args=(infile, data, output,)).start()
-    Thread(target=txt_hash, args=(infile, data, output,)).start()
+    if pass_crack_flag:
+        if not find_executable('steghide'):
+            print('\033[31;1m[-] "steghide" is not installed. Run "sudo apt install steghide -y" to install '
+                  'or if you are using Windows like Kacper then lol\033[0m')
+            exit()
+
+        if not os.path.isfile(wordlist):
+            print(f'\033[31;1m[-] Wordlist {wordlist} does not exist!\033[0m')
+            exit()
+
+        print('\033[34;1m[i] Cracking file with password method...\033[0m')
+        password_cracker = PasswordCracker(infile, wordlist)
+        password_cracker.run()
+
+    else:
+        print('\033[34;1m[i] Bruteforcing all possible file types...\033[0m')
+        if not os.path.isdir(output):
+            print(f'\033[34;1m[i] Creating directory {output}\033[0m')
+            os.mkdir(output)
+        Thread(target=jpg, args=(infile, data, output,)).start()
+        Thread(target=pdf, args=(infile, data, output,)).start()
+        Thread(target=exe, args=(infile, data, output,)).start()
+        Thread(target=txt_hash, args=(infile, data, output,)).start()
 
 
 if __name__ == '__main__':
