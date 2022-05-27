@@ -87,7 +87,7 @@ def get_data(filename):
 
     # print(text_from_bits('1101000'))
     # //print(binascii.unhexlify('%x' % bin_data))
-
+    print(data)
     return data
 
 

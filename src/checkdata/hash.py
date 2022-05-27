@@ -19,7 +19,7 @@ def check_data(source) -> {bool}:
     hash_chars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                   "A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f"]
 
-    hash_length = [128, 160, 192, 256, 384, 512]
+    hash_length = [64, 128, 160, 192, 256, 384, 512]
 
     matched_list = [characters in hash_chars for characters in source]
 

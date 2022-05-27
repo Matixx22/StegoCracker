@@ -25,7 +25,7 @@ def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
     pdf_location = ""
 
     pdf_signature = b'\x25\x50\x44\x46'
-    pdf_end_signature = b'\x25\x25\x45\x4F\x46'
+    pdf_end_signature = b'\x25\x45\x4F\x46'
 
     time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 

@@ -51,7 +51,7 @@ def hide(filename, to_hide: bytearray):
 
 
 if __name__ == '__main__':
-    file = "D:/kgrzegorzewski/Downloads/pw.html"
-    to_hide_file = open("../../resources/sample_small.jpg", 'rb')
+    file = "../../resources/html/github.html"
+    to_hide_file = open("../../resources/hashes/bot.hash", 'rb')
     to_hide = bytearray(to_hide_file.read())
     print(hide(file, to_hide))
