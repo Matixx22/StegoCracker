@@ -44,7 +44,7 @@ def get_data(filename):
 
     data = bytes()
 
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding="utf8") as file:
         # soup = BeautifulSoup(file.read(), 'xml')
         html = file.read()
         # parser.feed(file.read())
@@ -92,7 +92,7 @@ def get_data(filename):
 
 
 if __name__ == '__main__':
-    print(get_data("../../../resources/html/index.html"))
+    print(get_data("D:\kgrzegorzewski\Desktop\hide\/temp.html"))
 
 
 
