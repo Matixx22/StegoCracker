@@ -1,8 +1,5 @@
-from html.parser import HTMLParser
-from bs4 import BeautifulSoup
 import re
-import binascii
-from textwrap import wrap
+from html.parser import HTMLParser
 
 
 class MyHTMLParser(HTMLParser):

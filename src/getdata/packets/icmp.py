@@ -1,4 +1,4 @@
-from scapy.all import PcapReader, raw, rdpcap, ls, hex_bytes
+from scapy.all import rdpcap
 
 
 def _data_from_icmp(icmp_packet):

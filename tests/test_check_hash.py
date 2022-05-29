@@ -1,7 +1,7 @@
-from src.getdata.html.get_tags_letters import get_data as html_get_tags
-from src.getdata.packets.icmp import get_data as icmp_get_data
 from src.checkdata.hash import check_data as check_hash
 from src.checkdata.txt import check_data as check_txt
+from src.getdata.html.get_tags_letters import get_data as html_get_tags
+from src.getdata.packets.icmp import get_data as icmp_get_data
 
 
 # Check html
@@ -17,8 +17,8 @@ def test_check_hash_html():
 
 
 # Check lsb
-def test_check_hash_lsb():
-    pass
+# def test_check_hash_lsb():
+#     assert False
 
 
 # Check icmp

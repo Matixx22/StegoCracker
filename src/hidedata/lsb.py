@@ -1,6 +1,7 @@
-from PIL import Image
-import numpy as np
 from datetime import datetime
+
+import numpy as np
+from PIL import Image
 
 
 def bytes2intarray(data):
@@ -43,7 +44,7 @@ def hide_in_lsb(filename, to_hide):
 
     new_image_array = np.array(new_image).astype('uint8')
     new_image_array = np.reshape(new_image_array[..., np.newaxis], (pil_im.height, pil_im.width, 3))
-    Image.fromarray(new_image_array, mode='RGB').save(new_image_location, 'JPEG')
+    Image.fromarray(new_image_array.astype('uint'), mode='RGB').save(new_image_location, 'JPEG')
 
 
 if __name__ == '__main__':

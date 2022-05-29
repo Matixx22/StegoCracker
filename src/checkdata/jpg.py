@@ -1,5 +1,4 @@
 from datetime import datetime
-import os
 
 
 def _write_binary(data: bytes, path: str):
@@ -7,7 +6,7 @@ def _write_binary(data: bytes, path: str):
     file.write(data)
 
 
-def check_data(source: bytes, output: str = "../../resources/temp/") -> {bool, str}:
+def check_data(source: bytes, output: str = ".") -> {bool, str}:
     """
     Check if there is jpg in bytes
 
@@ -48,7 +47,7 @@ def check_data(source: bytes, output: str = "../../resources/temp/") -> {bool, s
 
 # delete later
 if __name__ == '__main__':
-    filename = "../../resources/sample.jpg"
+    filename = "../../tests/res/lsb/jpg_in_jpg.jpg"
     # only bytes from file
     jpg_file = open(filename, "rb")
     data = b'\xaa\xaa\xbb'

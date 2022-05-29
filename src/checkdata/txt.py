@@ -1,6 +1,3 @@
-import binascii
-from textwrap import wrap
-
 # Space, newline, comma, dot, A-Z, a-z, 0-9, dash, underscore, exclamation mark,
 # colon, semicolon, question mark, percent
 text_ascii_chars = [b'\x20', b'\x0a', b'\x20', b'\x41', b'\x42', b'\x43', b'\x44', b'\x45', b'\x46', b'\x47', b'\x48',

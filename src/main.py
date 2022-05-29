@@ -1,20 +1,18 @@
-from getdata import icmp_get_data
-from getdata import image_get_lsb
-from getdata import html_get_tags
+import argparse
+import os
+from datetime import datetime
+from distutils.spawn import find_executable
+from threading import Thread
 
+from checkdata import check_exe
 from checkdata import check_hash
 from checkdata import check_jpg
 from checkdata import check_pdf
 from checkdata import check_txt
-from checkdata import check_exe
-
-import argparse
-import os
-from datetime import datetime
-from threading import Thread
-from distutils.spawn import find_executable
-
 from cracker import PasswordCracker
+from getdata import html_get_tags
+from getdata import icmp_get_data
+from getdata import image_get_lsb
 
 
 def _write_binary(data: bytes, path: str):

@@ -1,5 +1,4 @@
 from datetime import datetime
-import os
 
 
 def _write_binary(data: bytes, path: str):

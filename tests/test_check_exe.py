@@ -1,5 +1,6 @@
-from src.getdata.html.get_tags_letters import get_data as html_get_tags
 from src.checkdata.exe import check_data as check_exe
+from src.getdata.html.get_tags_letters import get_data as html_get_tags
+from src.getdata.packets.icmp import get_data as icmp_get_data
 
 
 # Check html
@@ -11,21 +12,14 @@ def test_check_exe_html():
 
     assert data[0] is True
 
-    # with open('tests/res/hidden/hidden.exe', 'rb') as hidden, open(data[1], 'rb') as data_file:
-    #     check = True
-    #     while byte := hidden.read(1):
-    #         if byte != data_file.read(1):
-    #             check = False
-    #
-    #     assert check is True
-
-
 
 # Check lsb
-def test_check_exe_lsb():
-    pass
+# def test_check_exe_lsb():
+#     pass
 
 
 # Check icmp
 def test_check_exe_icmp():
-    pass
+    data = check_exe(icmp_get_data('tests/res/icmp/exe_in_icmp.pcapng'), 'tests/res/')
+
+    assert data[0] is True

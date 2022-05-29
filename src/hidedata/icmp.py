@@ -1,4 +1,4 @@
-from scapy.all import IP, ICMP, send, sendp
+from scapy.all import IP, ICMP, send
 
 
 def hide_in_icmp(data, src_ip, dst_ip):
