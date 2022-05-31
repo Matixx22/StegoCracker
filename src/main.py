@@ -26,7 +26,7 @@ def get_filetype(file):
     data = bytearray(open(file, 'rb').read(20))
 
     pcap_signature = [b'\x0A\x0D\x0D\x0A', b'\xA1\xB2\xC3\xD4', b'\x4D\x3C\xB2\xA1', b'\xA1\xB2\x3C\x4D']
-    jpg_signature = [b'\xff\xd8\xff']
+    jpg_signature = [b'\xff\xd8\xff', b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A']  # Also PNG
     html_signature = [b'<html', b'<Html', b'<hTml', b'<htMl', b'<htmL',
                       b'<HTml', b'<HtMl', b'<HtmL', b'<hTMl', b'<hTmL',
                       b'<htML', b'<HTMl', b'<HTmL', b'<HtML', b'<hTML',
@@ -37,7 +37,7 @@ def get_filetype(file):
         if data[:len(signature)] == signature:
             return 'pcap'
 
-    # jpg
+    # jpg, png
     for signature in jpg_signature:
         if data[:len(signature)] == signature:
             return 'jpg'
