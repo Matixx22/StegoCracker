@@ -38,7 +38,7 @@ def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
         pdf_end_index = source.index(pdf_end_signature) + len(pdf_end_signature)
         pdf_bytes = source[pdf_start_index:pdf_end_index]
         # write bytes to new file
-        pdf_location = output + str(time) + ".pdf"
+        pdf_location = output + "/" + str(time) + ".pdf"
         _write_binary(pdf_bytes, pdf_location)
 
     return is_pdf, pdf_location

@@ -88,11 +88,11 @@ def get_data(filename):
     # print(text_from_bits('1101000'))
     # //print(binascii.unhexlify('%x' % bin_data))
 
-    return data
+    return bytes(data)
 
 
 if __name__ == '__main__':
-    print(get_data("D:\kgrzegorzewski\Desktop\hide\/temp.html"))
+    print(get_data("../../../resources/hidden/secret.html"))
 
 
 

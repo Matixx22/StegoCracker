@@ -49,7 +49,7 @@ def check_data(source) -> {bool, str}:
 # remove later
 if __name__ == '__main__':
     text = bytearray.fromhex("4E 69 65 6E 61 77 69 64 7A 65 20 62 6F 74 6F 77 7e")
-    data = open("../../resources/sample.jpg", "rb").read()
+    data = open("../../resources/temp/2022_05_28_21_43_08.jpg", "rb").read()
 
     check = check_data(data)[1]
     print(check)

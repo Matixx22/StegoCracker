@@ -50,7 +50,6 @@ def get_filetype(file):
 
 def getdata(infile: str):
     infile_type = get_filetype(infile)
-
     if infile_type == 'html':
         return html_get_tags(infile)
 

@@ -41,7 +41,6 @@ def hide_in_lsb(filename, to_hide):
             new_image.append(tuple(new_pixel))
             color = 0
             current_pixel += 1
-            print(new_pixel)
 
     # add rest of the pixels
     if len(new_image) != len(image):
@@ -51,16 +50,14 @@ def hide_in_lsb(filename, to_hide):
     new_image_array = np.reshape(new_image_array[..., np.newaxis], (pil_im.height, pil_im.width, 3))
     new_pil_im = Image.fromarray(new_image_array)
     new_pil_im.resize(pil_im.size)
-    print(new_image_array)
     # new_pil_im.show()
     new_pil_im.save(new_image_location, format='PNG', subsampling=0, quality=100, optimize=False, progressive=True)
 
 
 if __name__ == '__main__':
-    file = "../../resources/sample.jpg"
-    data = open("../../resources/sample_small.jpg", 'rb').read()
+    file = "D:\Studia\BOT\PROJEKT/kocham_boty.jpg"
+    data = open("D:\Studia\BOT\PROJEKT/nienawidze_botow.jpg", 'rb').read()
     # data = (bytes("1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75", 'utf-8'))
     # data = b'kocham boty'
-    print(data.hex())
     bytes2intarray(data)
     hide_in_lsb(file, data)

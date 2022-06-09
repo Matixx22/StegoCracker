@@ -42,6 +42,9 @@ def check_data(source) -> {bool}:
 
 if __name__ == '__main__':
     check = check_data("1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75")
+    filename = "../../resources/temp/2022_05_28_21_41_03.jpg"
+    data = open(filename, 'rb').read()
+    check = check_data(data)
     print(check[0])
     print(check[1])
 

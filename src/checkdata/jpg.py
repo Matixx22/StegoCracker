@@ -48,26 +48,6 @@ def check_data(source: bytes, output: str = "../../resources/temp/") -> {bool, s
 
 # delete later
 if __name__ == '__main__':
-    filename = "../../resources/sample.jpg"
-    # only bytes from file
-    jpg_file = open(filename, "rb")
-    data = b'\xaa\xaa\xbb'
-    data += jpg_file.read()
-    full_jpg = data
-    jpg_file.close()
-
-    # only every second byte is from file
-    # I think we should make it every two bit (not byte)
-    # Just do another function in main file which will extract every two bits
-    # and then use check_data() functions
-    data = bytes()
-    jpg_file = open(filename, "rb")
-
-    byte = jpg_file.read(1)
-    while byte != b"":
-        data += byte
-        data += b'\xaa'
-        byte = jpg_file.read(1)
-    hide_jpg = data
-
-    check_data(full_jpg)
+    filename = "../../resources/temp/2022_05_28_21_41_03.jpg"
+    data = open(filename, 'rb').read()
+    check_data(data)

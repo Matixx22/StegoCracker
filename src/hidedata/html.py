@@ -52,6 +52,9 @@ def hide(filename, to_hide: bytearray):
 
 if __name__ == '__main__':
     file = "D:/kgrzegorzewski/Downloads/pw.html"
-    to_hide_file = open("../../resources/sample_small.jpg", 'rb')
-    to_hide = bytearray(to_hide_file.read())
-    print(hide(file, to_hide))
+    to_hide_file = open("D:\kgrzegorzewski\Downloads\pw.html", 'rb')
+    to_hide = (bytearray("cb41d5d806383e3cf0de8a0a04d69606", 'utf-8'))
+    hidden = hide(file, to_hide)
+
+    open("../../resources/hidden/secret.html", "wb").write(bytearray(hidden, 'utf-8'))
+

@@ -22,5 +22,5 @@ def hide_in_icmp(data, src_ip, dst_ip):
 if __name__ == '__main__':
     src_ip = "1.1.1.1"
     dst_ip = "2.2.2.2"
-    data = open("../../resources/sample.jpg", "rb").read()
+    data = open("D:\kgrzegorzewski\Downloads\calc.exe", "rb").read()
     hide_in_icmp(data, src_ip, dst_ip)

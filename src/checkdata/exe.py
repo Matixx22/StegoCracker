@@ -34,7 +34,7 @@ def check_data(source, output: str = "../../resources/temp/") -> {bool, str}:
         is_exe = True
         start_index = source.index(exe_signature)
         exe_bytes = source[start_index:]
-        exe_location = output + str(time) + ".exe"
+        exe_location = output + "/" + str(time) + ".exe"
         _write_binary(exe_bytes, exe_location)
 
     return is_exe, exe_location

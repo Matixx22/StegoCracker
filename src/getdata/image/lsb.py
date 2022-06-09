@@ -24,8 +24,9 @@ def get_data(filename) -> bytes:
     byte = 0
 
     for pixel in image:
-        for color in pixel:
-            bit[counter] = color & 1
+        for color in range(0,3):
+            bit[counter] = pixel[color] & 1
+
             counter += 1
             # convert 8bits to one byte and add to data
             if counter == 8:
@@ -45,6 +46,6 @@ def get_data(filename) -> bytes:
 
 
 if __name__ == '__main__':
-    filename = "../../../resources/sample.jpg"
+    filename = "../../../resources/temp/2022_05_31_17_18_10.jpg"
 
     print(get_data(filename).hex())
